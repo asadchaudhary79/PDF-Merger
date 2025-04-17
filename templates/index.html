@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light-mode">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,28 +12,28 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/modular/sortable.css"
+    />
   </head>
   <body>
     <div class="container">
       <header>
+        <div class="header-top">
+          <button id="dark-mode-toggle" class="dark-mode-toggle">
+            <i class="fas fa-moon"></i>
+            <span class="toggle-text">Dark Mode</span>
+          </button>
+        </div>
         <h1><i class="fas fa-file-pdf"></i> PDF Merger</h1>
         <p>Merge multiple PDF files into one document</p>
       </header>
 
       <main>
-        {% if request.args.get('error') %}
-        <div class="alert alert-error">
-          <i class="fas fa-exclamation-circle"></i> {{ request.args.get('error')
-          }}
-        </div>
-        {% endif %}
+        <div id="alert-container"></div>
 
-        <form
-          action="{{ url_for('merge_pdfs') }}"
-          method="POST"
-          enctype="multipart/form-data"
-          id="pdf-form"
-        >
+        <div id="step-1" class="step active">
           <div class="upload-container" id="drop-area">
             <div class="upload-icon">
               <i class="fas fa-cloud-upload-alt"></i>
@@ -54,16 +54,60 @@
             />
             <p class="file-info">Only PDF files are allowed (max 16MB total)</p>
           </div>
+        </div>
 
-          <div id="file-list-container" class="hidden">
-            <h3>Selected Files:</h3>
-            <ul id="file-list"></ul>
+        <div id="step-2" class="step hidden">
+          <div class="options-bar">
+            <button id="back-button" class="back-btn">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="merge-options">
+              <label class="checkbox-container">
+                <input type="checkbox" id="add-page-numbers" />
+                <span class="checkbox-text">Add page numbers</span>
+              </label>
+            </div>
           </div>
 
-          <button type="submit" class="submit-btn">
+          <h2>Arrange PDFs for merging</h2>
+          <p class="helper-text">
+            Drag and drop files to reorder them before merging
+          </p>
+
+          <div class="add-more-files-container">
+            <label for="add-more-files" class="add-more-btn">
+              <i class="fas fa-plus"></i> Add More Files
+            </label>
+            <input
+              type="file"
+              id="add-more-files"
+              name="more-files"
+              accept=".pdf"
+              multiple="multiple"
+              aria-label="Add more PDF files"
+            />
+          </div>
+
+          <div id="files-list-container">
+            <ul id="sortable-files" class="sortable-files"></ul>
+          </div>
+
+          <div class="preview-container hidden" id="preview-container">
+            <h3>Preview</h3>
+            <div class="preview-frame">
+              <iframe id="pdf-preview" frameborder="0"></iframe>
+            </div>
+          </div>
+
+          <button id="merge-button" class="submit-btn">
             <i class="fas fa-file-import"></i> Merge PDFs
           </button>
-        </form>
+        </div>
+
+        <div id="loading-overlay" class="hidden">
+          <div class="spinner"></div>
+          <p>Processing PDF files...</p>
+        </div>
       </main>
 
       <footer>
@@ -71,6 +115,7 @@
       </footer>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

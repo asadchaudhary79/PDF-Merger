@@ -1,3 +1,5 @@
 Flask==2.3.3
 PyPDF2==3.0.1
-Werkzeug==2.3.7 
+Werkzeug==2.3.7
+# Required for page numbering feature. If not installed, page numbering will be disabled.
+reportlab==4.0.4 

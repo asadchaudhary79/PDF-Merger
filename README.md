@@ -9,6 +9,12 @@ A modern web application built with Flask for merging multiple PDF files into a 
 - Multiple PDF selection
 - File validation to ensure only PDFs are processed
 - Instant download of the merged document
+- **NEW** Add files incrementally with "Add More Files" button
+- **NEW** File preview functionality
+- **NEW** Drag and drop reordering of files before merging
+- **NEW** Page numbering option for merged PDFs
+- **NEW** Dark mode support
+- **NEW** Better error handling and success feedback
 
 ## Prerequisites
 
@@ -49,7 +55,13 @@ A modern web application built with Flask for merging multiple PDF files into a 
    - Dragging and dropping files onto the upload area
    - Clicking the upload area and selecting files through the file dialog
 
-2. Review the list of files to be merged
+2. Review and organize your files:
+
+   - Preview file contents by clicking the eye icon
+   - Remove unwanted files with the trash icon
+   - Reorder files by dragging them up or down
+   - Add more files using the "Add More Files" button
+   - Enable page numbering with the checkbox if desired
 
 3. Click the "Merge PDFs" button to process the files
 
@@ -58,8 +70,9 @@ A modern web application built with Flask for merging multiple PDF files into a 
 ## Technologies Used
 
 - **Backend**: Python, Flask
-- **PDF Processing**: PyPDF2
+- **PDF Processing**: PyPDF2, ReportLab (for page numbering)
 - **Frontend**: HTML5, CSS3, JavaScript
+- **UI Components**: SortableJS (for drag-and-drop reordering)
 - **Icons**: Font Awesome
 
 ## Project Structure
@@ -73,7 +86,7 @@ pdf-merger/
 │   ├── css/
 │   │   └── styles.css    # CSS styles
 │   └── js/
-│       └── script.js     # JavaScript for drag & drop functionality
+│       └── script.js     # JavaScript for interactive features
 ├── templates/
 │   └── index.html        # Main HTML template
 └── uploads/              # Directory for storing uploaded files
