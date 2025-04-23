@@ -3,10 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDF Merger</title>
+    <title>PDF Merger | Professional PDF Tools</title>
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/favicon.svg') }}"
+      type="image/svg+xml"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="{{ url_for('static', filename='img/apple-touch-icon.png') }}"
+    />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='manifest.json') }}"
+    />
+    <meta name="theme-color" content="#4361ee" />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link
       rel="stylesheet"
@@ -18,90 +38,113 @@
     />
   </head>
   <body>
-    <div class="container">
-      <header>
-        <div class="header-top">
-          <button id="dark-mode-toggle" class="dark-mode-toggle">
-            <i class="fas fa-moon"></i>
-            <span class="toggle-text">Dark Mode</span>
-          </button>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="header-content">
+          <div class="logo-container">
+            <div class="logo">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="app-title">
+              <h1>PDF Merger</h1>
+              <span class="app-subtitle">Professional PDF Tools</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button
+              id="dark-mode-toggle"
+              class="dark-mode-toggle"
+              aria-label="Toggle dark mode"
+            >
+              <i class="fas fa-moon"></i>
+              <span class="toggle-text">Dark Mode</span>
+            </button>
+          </div>
         </div>
-        <h1><i class="fas fa-file-pdf"></i> PDF Merger</h1>
-        <p>Merge multiple PDF files into one document</p>
       </header>
 
-      <main>
-        <div id="alert-container"></div>
+      <main class="app-main">
+        <div id="alert-container" class="alert-container"></div>
 
-        <div id="step-1" class="step active">
-          <div class="upload-container" id="drop-area">
-            <div class="upload-icon">
-              <i class="fas fa-cloud-upload-alt"></i>
+        <div class="content-card">
+          <div id="step-1" class="step active">
+            <h2 class="step-title">Select PDF Files</h2>
+            <p class="step-description">
+              Add your PDF files to merge them into a single document
+            </p>
+
+            <div class="upload-container" id="drop-area">
+              <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <p class="drag-text">Drag & Drop PDF files here</p>
+              <p class="upload-separator">or</p>
+              <label for="file-input" class="file-label" id="file-label">
+                <i class="fas fa-file-upload"></i> Choose Files</label
+              >
+              <input
+                type="file"
+                id="file-input"
+                name="files"
+                accept=".pdf"
+                multiple="multiple"
+                aria-label="PDF file selector"
+                onclick="void(0)"
+              />
+              <p class="file-info">
+                Only PDF files are allowed (max 16MB total)
+              </p>
             </div>
-            <p class="drag-text">Drag & Drop files here</p>
-            <p>or</p>
-            <label for="file-input" class="file-label" id="file-label"
-              >Choose Files</label
-            >
-            <input
-              type="file"
-              id="file-input"
-              name="files"
-              accept=".pdf"
-              multiple="multiple"
-              aria-label="PDF file selector"
-              onclick="void(0)"
-            />
-            <p class="file-info">Only PDF files are allowed (max 16MB total)</p>
           </div>
-        </div>
 
-        <div id="step-2" class="step hidden">
-          <div class="options-bar">
-            <button id="back-button" class="back-btn">
-              <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <div class="merge-options">
-              <label class="checkbox-container">
-                <input type="checkbox" id="add-page-numbers" />
-                <span class="checkbox-text">Add page numbers</span>
+          <div id="step-2" class="step hidden">
+            <div class="options-bar">
+              <button id="back-button" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+              <div class="merge-options">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="add-page-numbers" />
+                  <span class="checkbox-custom"></span>
+                  <span class="checkbox-text">Add page numbers</span>
+                </label>
+              </div>
+            </div>
+
+            <h2 class="step-title">Arrange PDFs for merging</h2>
+            <p class="step-description">
+              Drag and drop files to reorder them before merging
+            </p>
+
+            <div class="add-more-files-container">
+              <label for="add-more-files" class="add-more-btn">
+                <i class="fas fa-plus"></i> Add More Files
               </label>
+              <input
+                type="file"
+                id="add-more-files"
+                name="more-files"
+                accept=".pdf"
+                multiple="multiple"
+                aria-label="Add more PDF files"
+              />
             </div>
-          </div>
 
-          <h2>Arrange PDFs for merging</h2>
-          <p class="helper-text">
-            Drag and drop files to reorder them before merging
-          </p>
-
-          <div class="add-more-files-container">
-            <label for="add-more-files" class="add-more-btn">
-              <i class="fas fa-plus"></i> Add More Files
-            </label>
-            <input
-              type="file"
-              id="add-more-files"
-              name="more-files"
-              accept=".pdf"
-              multiple="multiple"
-              aria-label="Add more PDF files"
-            />
-          </div>
-
-          <div id="files-list-container">
-            <ul id="sortable-files" class="sortable-files"></ul>
-          </div>
-
-          <div class="preview-container hidden" id="preview-container">
-            <h3>Preview</h3>
-            <div class="preview-frame">
-              <iframe id="pdf-preview" frameborder="0"></iframe>
+            <div id="files-list-container" class="files-list-container">
+              <ul id="sortable-files" class="sortable-files"></ul>
             </div>
-          </div>
 
-          <button id="merge-button" class="submit-btn">
-            <i class="fas fa-file-import"></i> Merge PDFs
-          </button>
+            <div class="preview-container hidden" id="preview-container">
+              <h3 class="preview-title">Preview</h3>
+              <div class="preview-frame">
+                <iframe id="pdf-preview" frameborder="0"></iframe>
+              </div>
+            </div>
+
+            <button id="merge-button" class="submit-btn">
+              <i class="fas fa-file-import"></i> Merge PDFs
+            </button>
+          </div>
         </div>
 
         <div id="loading-overlay" class="hidden">
@@ -110,8 +153,14 @@
         </div>
       </main>
 
-      <footer>
-        <p>&copy; 2023 PDF Merger - A simple tool to merge PDFs</p>
+      <footer class="app-footer">
+        <div class="footer-content">
+          <p>&copy; 2023 PDF Merger - Professional PDF Tools</p>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Terms of Service</a>
+          </div>
+        </div>
       </footer>
     </div>
 

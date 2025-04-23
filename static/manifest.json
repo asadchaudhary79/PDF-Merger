@@ -1,0 +1,16 @@
+{
+  "name": "PDF Merger",
+  "short_name": "PDF Merger",
+  "description": "Professional tool to merge PDF files",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4361ee",
+  "icons": [
+    {
+      "src": "img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
