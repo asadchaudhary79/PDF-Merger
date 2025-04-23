@@ -9,12 +9,12 @@ A modern web application built with Flask for merging multiple PDF files into a 
 - Multiple PDF selection
 - File validation to ensure only PDFs are processed
 - Instant download of the merged document
-- **NEW** Add files incrementally with "Add More Files" button
-- **NEW** File preview functionality
-- **NEW** Drag and drop reordering of files before merging
-- **NEW** Page numbering option for merged PDFs
-- **NEW** Dark mode support
-- **NEW** Better error handling and success feedback
+- Add files incrementally with "Add More Files" button
+- File preview functionality
+- Drag and drop reordering of files before merging
+- Page numbering option for merged PDFs
+- Dark mode support
+- Better error handling and success feedback
 
 ## Prerequisites
 
