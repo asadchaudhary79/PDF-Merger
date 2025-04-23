@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let uploadedFiles = [];
     let sessionId = null;
     let sortableList = null;
+    let currentFileId = null;
 
     // Initialize the app
     init();
@@ -44,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Initialize dark mode from preferences
         loadDarkModePreference();
         darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        // Initialize form handlers
+        initializeFormHandlers();
     }
 
     function initDragAndDrop() {
@@ -95,8 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Update the ordering of files after drag ends
                 const items = sortableFilesList.querySelectorAll('.sortable-item');
                 const newOrder = Array.from(items).map(item => parseInt(item.dataset.id));
-                // You can use this order when sending to the server
-                console.log('New file order:', newOrder);
             }
         });
     }
@@ -248,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sortableFilesList.innerHTML = '';
 
         // Add each file to the sortable list
-        uploadedFiles.forEach(file => {
+        uploadedFiles.forEach((file, index) => {
             const listItem = document.createElement('li');
             listItem.className = 'sortable-item';
             listItem.dataset.id = file.id;
@@ -274,6 +276,33 @@ document.addEventListener('DOMContentLoaded', function () {
             const fileActions = document.createElement('div');
             fileActions.className = 'file-actions';
 
+            // Order change buttons
+            const orderActions = document.createElement('div');
+            orderActions.className = 'order-actions';
+
+            // Up arrow button - disabled for first item
+            const upBtn = document.createElement('button');
+            upBtn.className = 'order-btn up-btn';
+            upBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            upBtn.title = 'Move up';
+            upBtn.disabled = index === 0;
+            upBtn.addEventListener('click', function () {
+                moveFile(file.id, 'up');
+            });
+
+            // Down arrow button - disabled for last item
+            const downBtn = document.createElement('button');
+            downBtn.className = 'order-btn down-btn';
+            downBtn.innerHTML = '<i class="fas fa-arrow-down"></i>';
+            downBtn.title = 'Move down';
+            downBtn.disabled = index === uploadedFiles.length - 1;
+            downBtn.addEventListener('click', function () {
+                moveFile(file.id, 'down');
+            });
+
+            orderActions.appendChild(upBtn);
+            orderActions.appendChild(downBtn);
+
             const previewBtn = document.createElement('button');
             previewBtn.className = 'preview-btn';
             previewBtn.innerHTML = '<i class="fas fa-eye"></i>';
@@ -290,6 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 removeFile(file.id);
             });
 
+            fileActions.appendChild(orderActions);
             fileActions.appendChild(previewBtn);
             fileActions.appendChild(removeBtn);
 
@@ -301,6 +331,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Update merge button state
         updateMergeButtonState();
+    }
+
+    // Function to move a file up or down in the list
+    function moveFile(fileId, direction) {
+        const fileIndex = uploadedFiles.findIndex(file => file.id === fileId);
+        if (fileIndex === -1) return;
+
+        if (direction === 'up' && fileIndex > 0) {
+            // Swap with the previous item
+            [uploadedFiles[fileIndex], uploadedFiles[fileIndex - 1]] =
+                [uploadedFiles[fileIndex - 1], uploadedFiles[fileIndex]];
+        }
+        else if (direction === 'down' && fileIndex < uploadedFiles.length - 1) {
+            // Swap with the next item
+            [uploadedFiles[fileIndex], uploadedFiles[fileIndex + 1]] =
+                [uploadedFiles[fileIndex + 1], uploadedFiles[fileIndex]];
+        }
+
+        // Redisplay the files with the new order
+        displayFiles();
     }
 
     function showPreview(fileId) {
@@ -531,4 +581,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error saving preferences:', error);
             });
     }
-}); 
+
+    // Initialize form handlers
+    function initializeFormHandlers() {
+        // Close modal when clicking on the X or outside the modal
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('modal') || event.target.classList.contains('close-btn')) {
+                const modal = event.target.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    }
+});

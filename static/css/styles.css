@@ -42,6 +42,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 }
 
 header {
@@ -94,6 +95,8 @@ header p {
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
+  width: 100%;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .alert i {
@@ -298,9 +301,10 @@ h2 {
 #files-list-container {
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: 1rem;
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: var(--box-shadow);
+  width: 100%;
 }
 
 .sortable-files {
@@ -317,6 +321,7 @@ h2 {
   align-items: center;
   cursor: grab;
   transition: var(--transition);
+  position: relative;
 }
 
 .sortable-item:last-child {
@@ -341,6 +346,9 @@ h2 {
   display: flex;
   align-items: center;
   flex: 1;
+  max-width: 70%;
+  overflow: hidden;
+  padding-left: 24px;
 }
 
 .file-icon {
@@ -355,7 +363,7 @@ h2 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 300px;
+  max-width: 250px;
 }
 
 .file-pages {
@@ -369,10 +377,13 @@ h2 {
 .file-actions {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .preview-btn,
-.remove-btn {
+.remove-btn,
+.action-btn {
   background: none;
   border: none;
   font-size: 1rem;
@@ -383,7 +394,8 @@ h2 {
 }
 
 .preview-btn:hover,
-.remove-btn:hover {
+.remove-btn:hover,
+.action-btn:hover {
   opacity: 1;
   transform: scale(1.2);
 }
@@ -396,13 +408,22 @@ h2 {
   color: #e74c3c;
 }
 
+.rotate-btn {
+  color: #f39c12;
+}
+
+.split-btn {
+  color: #9b59b6;
+}
+
 /* Preview container */
 .preview-container {
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
   padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0;
   box-shadow: var(--box-shadow);
+  width: 100%;
 }
 
 .preview-container h3 {
@@ -412,11 +433,10 @@ h2 {
 
 .preview-frame {
   width: 100%;
-  height: 400px;
+  height: 500px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   overflow: hidden;
-  background-color: var(--light-gray);
 }
 
 #pdf-preview {
@@ -426,35 +446,31 @@ h2 {
 }
 
 .submit-btn {
-  display: block;
-  width: 100%;
+  display: inline-block;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 1rem;
-  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--box-shadow);
+  transition: all 0.3s;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .submit-btn:hover {
   background-color: var(--secondary-color);
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.submit-btn:disabled {
-  background-color: var(--light-gray);
-  color: #888;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.submit-btn:active {
+  transform: translateY(0);
 }
 
-.submit-btn i {
-  margin-right: 0.5rem;
+.submit-btn:focus {
+  outline: none;
 }
 
 footer {
@@ -526,8 +542,11 @@ footer {
   }
 
   .file-actions {
-    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    margin-top: 0.5rem;
   }
 
   .preview-frame {
@@ -539,4 +558,281 @@ footer {
   color: var(--text-color);
   opacity: 0.7;
   font-size: 0.9rem;
+}
+
+/* Metadata display */
+.metadata-container {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--box-shadow);
+}
+
+.metadata-container h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.metadata-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.metadata-table th,
+.metadata-table td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.metadata-table th {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.dark-mode .metadata-table th,
+.dark-mode .metadata-table td {
+  border-color: var(--border-color);
+}
+
+/* Page size indicator */
+.page-size {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  background-color: var(--light-gray);
+  color: var(--text-color);
+}
+
+/* PDF Advanced Options */
+.pdf-options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--light-gray);
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.option-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.option-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+/* Space utility classes */
+.mt-1 {
+  margin-top: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+/* Improve option selectors */
+.option-group select,
+.option-group input[type="text"],
+.option-group input[type="password"],
+.option-group input[type="number"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--light-gray);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+}
+
+.option-group select:focus,
+.option-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.dark-mode .option-group select,
+.dark-mode .option-group input {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Improved button styles */
+.submit-btn:active,
+.modal-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:focus,
+.modal-btn:focus {
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Improve button alignment */
+.action-btn,
+.preview-btn,
+.remove-btn {
+  padding: 4px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s;
+}
+
+.action-btn:hover,
+.preview-btn:hover,
+.remove-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for disabled buttons */
+.submit-btn:disabled {
+  background-color: var(--light-gray);
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submit-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Order action buttons */
+.order-actions {
+  display: flex;
+  flex-direction: column;
+  margin-right: 8px;
+}
+
+.order-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+  margin: 1px 0;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.order-btn:hover:not(:disabled) {
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.order-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.up-btn {
+  margin-bottom: 2px;
+}
+
+.down-btn {
+  margin-top: 2px;
+}
+
+/* Make it more obvious files can be reordered */
+.sortable-item {
+  position: relative;
+}
+
+.sortable-item::before {
+  content: "≡";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #aaa;
+  cursor: grab;
 }

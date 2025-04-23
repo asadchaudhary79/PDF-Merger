@@ -62,6 +62,8 @@ A modern web application built with Flask for merging multiple PDF files into a 
    - Reorder files by dragging them up or down
    - Add more files using the "Add More Files" button
    - Enable page numbering with the checkbox if desired
+   - Rotate pages using the rotate button (clockwise 90°)
+   - Split multi-page PDFs into individual pages with the split button
 
 3. Click the "Merge PDFs" button to process the files
 
